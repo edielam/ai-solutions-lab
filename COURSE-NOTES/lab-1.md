@@ -1,6 +1,5 @@
 # Lab 1: Environment Setup & Project Introduction
 
-**Time Required:** 2-3 hours  
 **What You'll Do:** Create accounts for the services we need, install coding tools on your computer, and get the AI receptionist app running on your machine
 
 **Lab Collaborators:**

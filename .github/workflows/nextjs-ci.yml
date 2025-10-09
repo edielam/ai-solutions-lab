@@ -1,0 +1,77 @@
+name: Next.js Testing
+# Lab 4: Deployment Pipelines (CI/CD)
+# This workflow handles automated testing of the Next.js application
+
+on:
+  push:
+    branches: [ main, develop, test-cicd ]
+    paths:
+      - 'app/**'
+      - 'components/**'
+      - 'lib/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'next.config.js'
+      - 'tailwind.config.js'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/**'
+      - 'components/**'
+      - 'lib/**'
+      - 'package.json'
+      - 'package-lock.json'
+
+jobs:
+  # Test Job - Runs comprehensive testing
+  test:
+    name: Test Next.js Application
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Run comprehensive test suite
+      - name: Run test suite
+        run: npm test
+        env:
+          # Test environment variables
+          NODE_ENV: test
+
+      # Run linting (if ESLint is configured)
+      - name: Run linting
+        run: npm run lint || echo "Linting not configured, skipping..."
+        continue-on-error: true
+
+      # Run type checking (if TypeScript is configured)
+      - name: Type check
+        run: npx tsc --noEmit || echo "TypeScript not configured, skipping..."
+        continue-on-error: true
+
+      # Build the application
+      - name: Build application
+        run: npm run build
+
+      # Verify build output
+      - name: Verify build output
+        run: |
+          if [ -d ".next" ]; then
+            echo "Build successful - .next directory exists"
+            ls -la .next/
+          else
+            echo "Build failed - .next directory not found"
+            exit 1
+          fi

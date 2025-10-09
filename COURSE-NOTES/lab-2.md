@@ -1,6 +1,5 @@
 # Lab 2: AI Lifecycle & MLOps Integration
 
-**Time Required:** 3-4 hours  
 **What You'll Do:** Build a Flask MLOps service to track AI performance, integrate Prometheus for metrics monitoring, and implement comprehensive metrics collection for your AI receptionist
 
 **Lab Collaborators:**

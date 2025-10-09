@@ -45,13 +45,12 @@ export default function LabsPage() {
 
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
                   <div className="flex flex-wrap gap-2 sm:gap-3 lg:gap-4 text-xs sm:text-sm text-gray-500">
-                    <span>Duration: {lab.duration}</span>
                     <span>Level: {lab.level}</span>
                     <span>Tech: {lab.technology}</span>
                   </div>
 
                   <Link
-                    href={lab.id === 'lab1' ? '/labs/lab1' : lab.id === 'lab2' ? '/labs/lab2' : `/labs/${lab.id}`}
+                    href={`/labs/${lab.id}`}
                     className="text-blue-600 hover:text-blue-700 font-medium text-xs sm:text-sm lg:text-base inline-flex items-center"
                   >
                     Start Lab →

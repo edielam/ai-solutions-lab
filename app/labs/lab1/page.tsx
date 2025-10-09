@@ -6,11 +6,7 @@ export default function Lab1Page() {
     <>
       {/* Lab Header */}
       <div className="mb-6 sm:mb-8">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-lg mb-4 sm:mb-6">
-          <div className="text-center py-1 sm:py-0">
-            <div className="text-sm sm:text-lg font-semibold text-blue-900">2-3 hours</div>
-            <div className="text-xs sm:text-sm text-blue-700">Duration</div>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 p-3 sm:p-4 bg-blue-50 border border-blue-200 rounded-lg mb-4 sm:mb-6">
           <div className="text-center py-1 sm:py-0">
             <div className="text-sm sm:text-lg font-semibold text-blue-900">Foundation</div>
             <div className="text-xs sm:text-sm text-blue-700">Level</div>
@@ -29,9 +25,8 @@ export default function Lab1Page() {
       {/* Content */}
       <div className="prose prose-gray max-w-none prose-sm sm:prose-base">
         <h2 id="overview" className="text-xl sm:text-2xl font-bold mt-6 sm:mt-8 mb-4 sm:mb-6 text-gray-900">Lab Overview</h2>
-        
+
         <p className="mb-4 text-gray-700 leading-relaxed">
-          <strong>Time Required:</strong> 2-3 hours<br/>
           <strong>What You'll Do:</strong> Create accounts for the services we need, install coding tools on your computer, and get the AI receptionist app running on your machine
         </p>
 

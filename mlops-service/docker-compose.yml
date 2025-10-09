@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  mlops-service:
+    build: .
+    container_name: mlops-container
+    ports:
+      - "5001:5001"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - FLASK_ENV=${FLASK_ENV:-development}
+      - FLASK_DEBUG=${FLASK_DEBUG:-True}
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+      - SERVICE_PORT=${SERVICE_PORT:-5001}
+    env_file:
+      - .env
+    restart: unless-stopped
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - mlops-network
+
+networks:
+  mlops-network:
+    driver: bridge
