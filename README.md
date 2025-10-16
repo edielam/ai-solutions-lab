@@ -90,4 +90,4 @@ By completing this lab, you'll have:
 
 ---
 
-**Ready to build your AI receptionist service?** Start with **[Lab 1 Setup](COURSE-NOTES/lab-1.md)** to get your development environment ready!
+**Ready to build your AI receptionist service?** Start with **[Lab 1 Setup](COURSE-NOTES/lab-1.md)** to get your development environment ready!< CI/CD Pipeline Test -->
