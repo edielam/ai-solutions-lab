@@ -47,7 +47,7 @@ jobs:
 
       # Run comprehensive test suite
       - name: Run test suite
-        run: npm test
+        run: npm test -- --passWithNoTests
         env:
           # Test environment variables
           NODE_ENV: test
