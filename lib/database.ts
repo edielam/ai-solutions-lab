@@ -1,6 +1,13 @@
 import { neon } from "@neondatabase/serverless"
 
-const sql = neon(process.env.DATABASE_URL!)
+let sql: any
+
+if (process.env.DATABASE_URL && process.env.DATABASE_URL.trim() !== "") {
+  sql = neon(process.env.DATABASE_URL)
+} else {
+  console.warn("⚠️ DATABASE_URL not set — using mock SQL function for CI/CD build.")
+  sql = async () => [] // mock fallback to avoid crashes
+}
 
 export interface Business {
   id: string
