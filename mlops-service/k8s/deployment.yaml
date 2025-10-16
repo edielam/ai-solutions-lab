@@ -1,0 +1,59 @@
+# Kubernetes Deployment for Flask MLOps Service
+# This file tells Kubernetes how to run your Flask application
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlops-deployment
+  labels:
+    app: mlops-service
+
+spec:
+  # How many copies (pods) of your Flask service to run
+  replicas: 2
+
+  # How to find the pods this deployment manages
+  selector:
+    matchLabels:
+      app: mlops-service
+
+  # Template for creating pods
+  template:
+    metadata:
+      labels:
+        app: mlops-service
+
+    spec:
+      containers:
+      - name: mlops-container
+        # Use the Docker image you built in Lab 5
+        image: mlops-service:latest
+        # Tell Kubernetes to never pull from Docker Hub (use local image)
+        imagePullPolicy: Never
+
+        ports:
+        - containerPort: 5001
+          name: http
+
+        # Environment variables your Flask app needs
+        env:
+        - name: FLASK_ENV
+          value: "development"
+        - name: SERVICE_PORT
+          value: "5001"
+
+        # Health check: Kubernetes will check if your app is alive
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5001
+          initialDelaySeconds: 10
+          periodSeconds: 10
+
+        # Readiness check: Is your app ready to receive traffic?
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5001
+          initialDelaySeconds: 5
+          periodSeconds: 5

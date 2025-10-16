@@ -1,0 +1,24 @@
+# Kubernetes Service for Flask MLOps Service
+# This creates a stable address to access your Flask pods
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlops-service
+  labels:
+    app: mlops-service
+
+spec:
+  # NodePort: Accessible from your laptop
+  type: NodePort
+
+  # Which pods should this service route traffic to?
+  selector:
+    app: mlops-service
+
+  ports:
+  - port: 5001          # Port on the service
+    targetPort: 5001    # Port on the pod
+    nodePort: 30001     # Port you'll access from your laptop (30000-32767 range)
+    protocol: TCP
+    name: http

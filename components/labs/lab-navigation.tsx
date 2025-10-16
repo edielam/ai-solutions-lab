@@ -69,6 +69,7 @@ export function LabNavigation({ currentLabId, sections, currentSectionId }: LabN
     { id: 'lab3', title: 'Lab 3: Testing AI Systems', path: '/labs/lab3' },
     { id: 'lab4', title: 'Lab 4: CI/CD Pipelines', path: '/labs/lab4' },
     { id: 'lab5', title: 'Lab 5: Containerization', path: '/labs/lab5' },
+    { id: 'lab6', title: 'Lab 6: Kubernetes Orchestration', path: '/labs/lab6' },
   ]
 
   const SidebarContent = () => (

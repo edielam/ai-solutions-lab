@@ -45,6 +45,13 @@ export function getAllLabsSummary(): LabSummary[] {
       duration: '2-3 hours',
       level: 'Advanced',
       technology: 'Docker'
+    },
+    {
+      id: 'lab6',
+      title: 'Lab 6: Orchestration & Scaling with Kubernetes',
+      description: 'Install Kubernetes locally (minikube), deploy your containerized Flask service, and learn how to scale it up and down with simple commands.',
+      level: 'Advanced',
+      technology: 'Kubernetes'
     }
   ];
 }

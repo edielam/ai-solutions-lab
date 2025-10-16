@@ -130,6 +130,42 @@ const labConfigs = {
       { id: 'use-compose', title: '4. Use Docker Compose' },
       { id: 'troubleshooting', title: 'Troubleshooting' },
     ]
+  },
+  'lab6': {
+    title: 'Lab 6: Orchestration & Scaling with Kubernetes',
+    sections: [
+      { id: 'overview', title: 'Lab Overview' },
+      { id: 'prerequisites', title: 'Prerequisites Check' },
+      { id: 'part-a', title: 'Part A: Understanding Kubernetes' },
+      { id: 'what-is-kubernetes', title: '1. What is Kubernetes?' },
+      { id: 'why-kubernetes', title: '2. Why Use Kubernetes?' },
+      { id: 'key-concepts', title: '3. Key Kubernetes Concepts' },
+      { id: 'part-b', title: 'Part B: Install Kubernetes' },
+      { id: 'what-is-minikube', title: '1. What is minikube?' },
+      { id: 'install-minikube', title: '2. Install minikube' },
+      { id: 'install-kubectl', title: '3. Install kubectl' },
+      { id: 'start-minikube', title: '4. Start minikube' },
+      { id: 'part-c', title: 'Part C: Kubernetes Config Files' },
+      { id: 'k8s-folder', title: '1. Verify Kubernetes Folder' },
+      { id: 'deployment-config', title: '2. Understanding deployment.yaml' },
+      { id: 'service-config', title: '3. Understanding service.yaml' },
+      { id: 'part-d', title: 'Part D: Deploy to Kubernetes' },
+      { id: 'prepare-image', title: '1. Prepare Docker Image' },
+      { id: 'deploy-k8s', title: '2. Deploy to Kubernetes' },
+      { id: 'verify-deployment', title: '3. Verify Deployment' },
+      { id: 'access-service', title: '4. Access Your Service' },
+      { id: 'part-e', title: 'Part E: Scaling Your Service' },
+      { id: 'understanding-scaling', title: '1. Understanding Scaling' },
+      { id: 'scale-up', title: '2. Scale Up (Add Pods)' },
+      { id: 'scale-down', title: '3. Scale Down (Remove Pods)' },
+      { id: 'test-load-balancing', title: '4. Test Load Balancing' },
+      { id: 'part-f', title: 'Part F: kubectl Commands' },
+      { id: 'viewing-resources', title: '1. Viewing Resources' },
+      { id: 'viewing-logs', title: '2. Viewing Logs' },
+      { id: 'describing-resources', title: '3. Describing Resources' },
+      { id: 'managing-deployment', title: '4. Managing Deployment' },
+      { id: 'troubleshooting', title: 'Troubleshooting' },
+    ]
   }
 }
 
