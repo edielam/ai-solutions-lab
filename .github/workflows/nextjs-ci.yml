@@ -65,6 +65,8 @@ jobs:
       # Build the application
       - name: Build application
         run: npm run build
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       # Verify build output
       - name: Verify build output
