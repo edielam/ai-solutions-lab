@@ -300,6 +300,20 @@ const labConfigs = {
       { id: 'when-to-use', title: 'When to Use Each' },
       { id: 'troubleshooting', title: 'Troubleshooting' },
     ]
+  },
+  'lab10': {
+    title: 'Lab 10: Security & Compliance for AI Systems',
+    sections: [
+      { id: 'overview', title: 'Lab Overview' },
+      { id: 'prerequisites', title: 'Prerequisites Check' },
+      { id: 'part-a', title: 'Part A: Understanding Security' },
+      { id: 'part-b', title: 'Part B: Secure Environment Variables' },
+      { id: 'part-c', title: 'Part C: API Rate Limiting' },
+      { id: 'part-d', title: 'Part D: API Key Authentication' },
+      { id: 'part-e', title: 'Part E: GDPR Compliance' },
+      { id: 'part-f', title: 'Part F: Security Best Practices' },
+      { id: 'troubleshooting', title: 'Troubleshooting' },
+    ]
   }
 }
 

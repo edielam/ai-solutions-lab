@@ -73,6 +73,7 @@ export function LabNavigation({ currentLabId, sections, currentSectionId }: LabN
     { id: 'lab7', title: 'Lab 7: Cloud Deployment', path: '/labs/lab7' },
     { id: 'lab8', title: 'Lab 8: Serverless Deployment', path: '/labs/lab8' },
     { id: 'lab9', title: 'Lab 9: Monitoring & Logging', path: '/labs/lab9' },
+    { id: 'lab10', title: 'Lab 10: Security & Compliance', path: '/labs/lab10' },
   ]
 
   const SidebarContent = () => (

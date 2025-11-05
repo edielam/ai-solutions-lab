@@ -16,6 +16,9 @@ requests==2.31.0
 python-dotenv==1.0.0
 psutil==5.9.8
 
+# Security (Lab 10)
+Flask-Limiter==3.5.0
+
 # Development and testing (optional)
 pytest==7.4.3
 pytest-flask==1.3.0

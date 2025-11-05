@@ -73,6 +73,13 @@ export function getAllLabsSummary(): LabSummary[] {
       description: 'Learn production monitoring concepts, explore AWS CloudWatch for deployed Lambda functions, and enhance your Prometheus dashboard with detailed health checks and metrics.',
       level: 'Advanced',
       technology: 'CloudWatch + Prometheus'
+    },
+    {
+      id: 'lab10',
+      title: 'Lab 10: Security & Compliance for AI Systems',
+      description: 'Implement security fundamentals for your AI application including API key authentication, rate limiting, secure environment variables, and GDPR compliance basics.',
+      level: 'Advanced',
+      technology: 'Flask-Limiter + Security'
     }
   ];
 }
