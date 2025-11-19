@@ -1,22 +1,28 @@
 """
 Flask MLOps Service for AI Appointment Setter with Prometheus
 Lab 2: AI Lifecycle & MLOps Integration
+Lab 10: Security & Compliance
 
 This service handles:
 1. Receiving metrics from the Next.js application
 2. Tracking AI performance with Prometheus
 3. Storing metrics in the database
 4. Providing analytics endpoints
+5. API security and rate limiting (Lab 10)
 
 Key Learning Objectives:
 - Understanding MLOps fundamentals with industry-standard tools
 - Implementing metrics collection and tracking with Prometheus
 - Building microservices architecture
 - Real-time monitoring and alerting
+- API security best practices (Lab 10)
 """
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from functools import wraps
 import os
 import json
 import time
@@ -41,11 +47,25 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 CORS(app)  # Enable CORS for Next.js integration
 
+# Initialize rate limiter (Lab 10)
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://",
+)
+
 # Track service start time for uptime calculation
 SERVICE_START_TIME = time.time()
 LAST_REQUEST_TIME = None
 TOTAL_REQUESTS = 0
 FAILED_REQUESTS = 0
+
+# Security configuration (Lab 10)
+MLOPS_API_KEY = os.getenv('MLOPS_API_KEY')
+if not MLOPS_API_KEY:
+    logger.warning("MLOPS_API_KEY not set - API key authentication disabled")
+    logger.warning("For production, set MLOPS_API_KEY environment variable")
 
 # Database connection configuration
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -178,7 +198,40 @@ create_metrics_table()
 # Rebuild Prometheus metrics from database on startup
 rebuild_prometheus_metrics_from_db()
 
+# API Key Authentication Decorator (Lab 10)
+def require_api_key(f):
+    """
+    Decorator to require API key authentication
+    Checks for X-API-Key header and validates it
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # If no API key is configured, allow all requests (development mode)
+        if not MLOPS_API_KEY:
+            return f(*args, **kwargs)
+
+        # Check for API key in header
+        api_key = request.headers.get('X-API-Key')
+
+        if not api_key:
+            logger.warning(f"Missing API key from {get_remote_address()}")
+            return jsonify({
+                'error': 'Unauthorized',
+                'message': 'API key required. Include X-API-Key header.'
+            }), 401
+
+        if api_key != MLOPS_API_KEY:
+            logger.warning(f"Invalid API key from {get_remote_address()}")
+            return jsonify({
+                'error': 'Forbidden',
+                'message': 'Invalid API key'
+            }), 403
+
+        return f(*args, **kwargs)
+    return decorated_function
+
 @app.route('/')
+@limiter.exempt  # Dashboard is public, no rate limit
 def dashboard():
     """
     Serve the MLOps dashboard
@@ -228,6 +281,7 @@ def calculate_error_rate():
     return round((FAILED_REQUESTS / TOTAL_REQUESTS) * 100, 2)
 
 @app.route('/health', methods=['GET'])
+@limiter.limit("100 per minute")  # Public endpoint with generous rate limit
 def health_check():
     """
     Basic health check endpoint to verify service is running
@@ -241,10 +295,12 @@ def health_check():
         'timestamp': datetime.utcnow().isoformat(),
         'monitoring': 'prometheus',
         'metrics_endpoint': '/metrics',
-        'prometheus_port': os.getenv('PROMETHEUS_PORT', '8001')
+        'prometheus_port': os.getenv('PROMETHEUS_PORT', '8001'),
+        'security': 'API key authentication enabled' if MLOPS_API_KEY else 'No authentication'
     })
 
 @app.route('/health/detailed', methods=['GET'])
+@limiter.limit("50 per minute")  # Public endpoint with rate limit
 def detailed_health_check():
     """
     Detailed health check endpoint with comprehensive system information
@@ -306,6 +362,7 @@ def detailed_health_check():
     })
 
 @app.route('/metrics')
+@limiter.exempt  # Prometheus endpoint, no rate limit
 def metrics():
     """
     Prometheus metrics endpoint
@@ -314,6 +371,8 @@ def metrics():
     return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
 
 @app.route('/track', methods=['POST'])
+@limiter.limit("100 per hour")  # Rate limit metrics tracking
+@require_api_key  # Require API key authentication (Lab 10)
 def track_metrics():
     """
     Main endpoint for receiving metrics from Next.js application
@@ -534,6 +593,8 @@ def store_metrics_in_db(metrics_data: Dict[str, Any]) -> bool:
         return False
 
 @app.route('/refresh-metrics', methods=['POST'])
+@limiter.limit("10 per hour")  # Limited refresh endpoint
+@require_api_key  # Require API key authentication (Lab 10)
 def refresh_metrics():
     """
     Endpoint for Next.js to trigger metrics refresh from database
@@ -563,13 +624,15 @@ def refresh_metrics():
         return jsonify({'error': 'Failed to refresh metrics'}), 500
 
 @app.route('/analytics/<business_id>', methods=['GET'])
+@limiter.limit("50 per hour")  # Rate limited analytics endpoint
+@require_api_key  # Require API key authentication (Lab 10)
 def get_analytics(business_id: str):
     """
     Get analytics dashboard data for a specific business
-    
+
     Args:
         business_id: UUID of the business
-        
+
     Returns:
         JSON with aggregated metrics and insights
     """
@@ -609,16 +672,23 @@ if __name__ == '__main__':
     print("📊 Monitoring: Prometheus")
     print("💾 Database: Simplified (cross-platform)")
     print(f"🌐 Service Port: {service_port}")
+    if MLOPS_API_KEY:
+        print("🔐 Security: API Key Authentication ENABLED")
+    else:
+        print("⚠️  Security: API Key Authentication DISABLED (Development Mode)")
+    print("🚦 Rate Limiting: ENABLED")
     print("🌐 Endpoints:")
-    print(f"   - GET  http://localhost:{service_port}/ (Dashboard)")
-    print(f"   - GET  http://localhost:{service_port}/health")
-    print(f"   - GET  http://localhost:{service_port}/metrics (Prometheus)")
-    print(f"   - POST http://localhost:{service_port}/track")
-    print(f"   - GET  http://localhost:{service_port}/analytics/<business_id>")
+    print(f"   - GET  http://localhost:{service_port}/ (Dashboard - Public)")
+    print(f"   - GET  http://localhost:{service_port}/health (Public, rate limited)")
+    print(f"   - GET  http://localhost:{service_port}/metrics (Prometheus - Public)")
+    print(f"   - POST http://localhost:{service_port}/track (Protected, rate limited)")
+    print(f"   - GET  http://localhost:{service_port}/analytics/<business_id> (Protected)")
     print("")
     print("🎯 Quick Start:")
     print(f"   📊 View Dashboard: http://localhost:{service_port}/")
     print(f"   📈 View Raw Metrics: http://localhost:{service_port}/metrics")
+    if MLOPS_API_KEY:
+        print(f"   🔑 Protected endpoints require X-API-Key header")
     print("")
     
     # Start Prometheus metrics server on a separate port
