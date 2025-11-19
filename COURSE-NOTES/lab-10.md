@@ -903,13 +903,13 @@ Congratulations! You've implemented fundamental security practices for your AI a
 📋 **GDPR requires transparency** - Tell users what data you collect
 ✅ **Security is a process, not a product** - Continuous improvement
 
-### What's Next?
+<!-- ### What's Next?
 
 **Lab 11-12:** Final Integration & Analysis
 - Performance testing
 - Cost analysis (compare deployments)
 - MLOps analysis with Prometheus data
-- Live demonstration preparation
+- Live demonstration preparation -->
 
 ---
 
@@ -958,4 +958,4 @@ After completing the quiz:
 
 You've learned fundamental security practices for AI systems. Remember: security is an ongoing process, not a one-time task. Keep learning and stay vigilant!
 
-**Next:** Lab 11-12 - Final Integration & Analysis
+<!-- **Next:** Lab 11-12 - Final Integration & Analysis -->
